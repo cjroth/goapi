@@ -24,9 +24,15 @@ func main() {
     r.HandleFunc("/register", lib.GetHandlerWithContext(routes.RegisterHandler, context)).
         Methods("POST")
 
+    // create sub router for /users/*
     users := r.PathPrefix("/users").Subrouter()
     users.HandleFunc("/{id}/shifts/{start}/{end}", lib.GetHandlerWithContext(routes.UsersShiftHandler, context)).
         Methods("GET")
+
+    // create sub router for /me/*
+    me := r.PathPrefix("/me").Subrouter()
+    me.HandleFunc("/locations", lib.GetHandlerWithContext(routes.PostMeLocationsHandler, context)).
+        Methods("POST")
 
     http.Handle("/", r)
 
@@ -49,6 +55,7 @@ func initDb() *gorp.DbMap {
     // add a table, setting the table name to 'posts' and
     // specifying that the Id property is an auto incrementing PK
     dbmap.AddTableWithName(models.User{}, "users")
+    dbmap.AddTableWithName(models.Location{}, "locations")
         // .SetKeys(true, "Id")
 
     // create the table. in a production system you'd generally
