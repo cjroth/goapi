@@ -25,6 +25,11 @@ func PostMeLocationsHandler(c lib.Context, w http.ResponseWriter, r *http.Reques
     loc.Id = uuid.New()
     loc.UserId = uuid.New()
 
+    c.LocationQueue <- loc
+
+    // insert to database for long-term storage
+    // would be useful if we wanted to re-aggregate shifts from
+    // location data with a different or improved algorithm
     err = c.Dbmap.Insert(&loc)
     lib.HandleError(err, "Insert failed")
 

@@ -7,7 +7,7 @@ import (
     "github.com/gorilla/mux"
 )
 
-func UsersShiftHandler(c lib.Context, res http.ResponseWriter, req *http.Request) {
+func GetUsersShiftsHandler(c lib.Context, res http.ResponseWriter, req *http.Request) {
     vars := mux.Vars(req)
     id := vars["id"]
     start := vars["start"]
